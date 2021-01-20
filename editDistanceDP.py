@@ -22,7 +22,7 @@ print(editDistance(str1,str2,len(str1),len(str2)))
 
 # dp approach - first
 
-def editDistanceDP(str1,str2):
+def editDistanceDPF(str1,str2):
     m = len(str1)
     n = len(str2)
     dp = [[0 for _ in range(n+1)] for _ in range(m+1)]
@@ -40,5 +40,26 @@ def editDistanceDP(str1,str2):
                                    dp[i][j-1]) # Remove
     return dp[m][n]
 
-print(editDistanceDP(str1,str2))
+print(editDistanceDPF(str1,str2))
+
+# DP approach - Second
+
+def editDistanceDPS(str1,str2):
+    m = len(str1)
+    n = len(str2)
+    dp = [[0 for _ in range(m+1)] for _ in range(2)]
+
+    for i in range(m+1):
+        dp[0][i] = i
+    for i in range(n+1):
+        for j in range(m+1):
+            if j == 0 :
+                dp[i%2][j] = i
+            elif str1[j-1] == str2[i-1]:
+                dp[i%2][j] = dp[(i-1)%2][j-1]
+            else:
+                dp[i%2][j] = 1 + min(dp[i%2][j-1],dp[(i-1)%2][j-1],dp[(i-1)%2][j])
+    return dp[n%2][m]
+
+print(editDistanceDPS(str1,str2))
 
